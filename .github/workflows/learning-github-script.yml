@@ -3,6 +3,8 @@ name: Learning GitHub Script
 on:
   issues:
     types: [opened]
+
+# Bắt buộc phải có để token có quyền ghi comment và đọc nội dung
 permissions:
   issues: write
   contents: read
@@ -12,30 +14,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Comment on new issue
         uses: actions/github-script@v7
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs')
-            const issueBody = fs.readFileSync(".github/ISSUE_RESPONSES/comment.md", "utf8")
-            github.issues.createComment({
+            const fs = require('fs');
+            const issueBody = fs.readFileSync(".github/ISSUE_RESPONSES/comment.md", "utf8");
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: issueBody
-            })
+            });
 
       - name: Add issue to project board
         if: contains(github.event.issue.labels.*.name, 'bug')
         uses: actions/github-script@v7
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.projects.createCard({
+            await github.rest.projects.createCard({
               column_id: 12345678, 
               content_id: context.payload.issue.id,
               content_type: "Issue"
-            })
+            });
