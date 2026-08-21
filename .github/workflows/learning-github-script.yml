@@ -41,3 +41,25 @@ jobs:
               content_id: context.payload.issue.id,
               content_type: "Issue"
             });
+  # Job này chỉ chạy khi có bất kỳ bước nào ở trên bị lỗi (failed)
+  report-failure:
+    runs-on: ubuntu-latest
+    needs: comment
+    if: failure()
+    steps:
+      - name: Create bug report issue on failure
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const errorTitle = `[Workflow Failure] Lỗi chạy tự động cho Issue #${context.issue.number}`;
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const errorBody = `⚠️ Workflow **Learning GitHub Script** đã gặp sự cố khi đang xử lý.\n\n- **Chi tiết Run/Logs:** [Xem toàn bộ logs tại đây](${runUrl})\n- **Trigger bởi Issue:** #${context.issue.number}`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: errorTitle,
+              body: errorBody,
+              labels: ['bug', 'automated-failure']
+            });
