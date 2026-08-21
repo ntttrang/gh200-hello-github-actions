@@ -66,7 +66,7 @@ jobs:
       - name: Send Slack Notification and Tag User
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_TAG_USER: ${{ env.SLACK_TAG_USER }} # Lưu thông tin tag vào biến môi trường
+          SLACK_TAG_USER: ${{ vars.SLACK_TAG_USER }} # Đọc từ repository variable (Settings → Secrets and variables → Actions → Variables)
         uses: actions/github-script@v7
         with:
           script: |
