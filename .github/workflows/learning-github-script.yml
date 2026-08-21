@@ -3,6 +3,9 @@ name: Learning GitHub Script
 on:
   issues:
     types: [opened]
+permissions:
+  issues: write
+  contents: read
 
 jobs:
   comment:
