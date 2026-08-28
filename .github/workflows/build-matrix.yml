@@ -3,7 +3,7 @@ name: Build matrix
 on:
     workflow_dispatch:
         inputs:
-            environments:
+            environment:
                 description: 'Choose environments'
                 default: staging
                 required: false
@@ -30,6 +30,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                 node-version: ${{matrix.version}}
+                cache: 'npm'
 
             - name: Install dependencies
               run: npm ci
