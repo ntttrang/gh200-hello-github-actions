@@ -12,6 +12,7 @@ on:
                     - staging
                     - production
             dry-run:
+                description: 'Run in dry-run mode'
                 type: boolean
                 default: false
 
@@ -23,16 +24,24 @@ jobs:
                 version: [20,22]
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
             - name: Setup node
               uses: actions/setup-node@v4
               with:
                 node-version: ${{matrix.version}}
 
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run tests
+              run: npm test --if-present
+
             -   name: Upload artifact
                 uses: actions/upload-artifact@v4
                 with:
-                    name: my-artifact
-                    path: my_text.txt
+                    name: node-app-${{ matrix.version }}
+                    path: .
                     retention-days: 7
     
     report:
@@ -42,8 +51,10 @@ jobs:
         steps:
             - name: Download
               uses:   actions/download-artifact@v4
-              with:
-                name: my-artifact
+
+            - name: List downloaded files
+              run: |
+                ls -R
 
 
         
