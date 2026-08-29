@@ -14,7 +14,7 @@ jobs:
             - name: Compute version and environment variables
               id: meta
               run: |
-                versio$(git describe --tags 2>/dev/null || echo 0.0.0)
+                version$(git describe --tags 2>/dev/null || echo 0.0.0)
                 echo "version=$version" >> "$GITHUB_OUTPUT"
                 echo "built_at=$(date -u)" >> "$GITHUB_ENV"
     
