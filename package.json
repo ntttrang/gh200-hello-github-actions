@@ -1,8 +1,13 @@
 {
   "name": "gh200-hello-github-actions",
   "version": "1.0.0",
-  "description": "<div align=\"center\">",
+  "private": true,
+  "description": "GitHub Pages demo site for the GitHub Actions exercise",
   "main": "index.js",
+  "scripts": {
+    "test": "node -e \"const fs=require('fs'); if (!fs.existsSync('index.html')) { console.error('index.html missing'); process.exit(1); } console.log('Static site check passed');\"",
+    "build": "mkdir -p dist && cp index.html dist/index.html"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ntttrang/gh200-hello-github-actions.git"
