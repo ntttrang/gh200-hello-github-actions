@@ -16,6 +16,6 @@ runs:
           id: greeting-step
           shell: bash
           run: |
-            MSG="Hello, ${{inputs.who}}!"
+            MSG="Hello, ${{inputs.who}}!!"
             echo $MSG
             echo "greeting=$MSG" >> $GITHUB_OUTPUT
