@@ -1,0 +1,19 @@
+name: Staging Deploy
+
+on:
+    workflow_dispatch:
+
+permissions:
+    contents: read
+    id-token: write
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        environment: staging
+        steps:
+            - name: Echo Staging Token
+              run: echo "${{secrets.STAGING_TOKEN}}"
+            
+            - name: Show OIDC Token Request URL
+              run: echo "$ACTIONS_ID_TOKEN_REQUEST_URL"
