@@ -1,0 +1,20 @@
+name: Test Greet Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run custom greet action
+        id: greet
+        uses: ./.github/actions/greet
+        with:
+          who: 'Actions'
+
+      - name: Print output message
+        run: echo "The output was -> ${{ steps.greet.outputs.message }}"
